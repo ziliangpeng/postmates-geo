@@ -18,8 +18,8 @@ def geocode():
     lat = None
     long = None
 
-    here_response = geo.make_here_query(address).text
-    google_response = geo.make_google_query(address).text
+    here_response = geo.HereService(address).make_query().text
+    google_response = geo.GoogleService(address).make_query().text
 
     response_data = {
         'address': address,
