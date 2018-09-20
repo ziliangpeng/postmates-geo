@@ -19,12 +19,14 @@ def geocode():
     long = None
 
     here_response = geo.make_here_query(address).text
+    google_response = geo.make_google_query(address).text
 
     response_data = {
         'address': address,
         'lat': lat,
         'long': long,
         'here': here_response,
+        'google': google_response,
     }
     js = json.dumps(response_data)
 
