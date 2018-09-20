@@ -1,6 +1,6 @@
 from credentials import data as creds
 import json
-import requests
+import urllib
 
 
 class GeocodingService(object):
@@ -16,7 +16,10 @@ class GeocodingService(object):
     def make_query(self):
         url = self._construct_url()
         print(url)
-        return self._parse_result(requests.get(url).text)
+        response = urllib.request.urlopen(url, timeout=2)
+        charsets = response.headers.get_charsets()
+        text = response.read().decode(charsets[0])
+        return self._parse_result(text)
 
 
 class HereService(GeocodingService):
