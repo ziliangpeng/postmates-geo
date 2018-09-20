@@ -1,6 +1,7 @@
 from flask import Flask, Response
 from flask import request
 import json
+import geo
 
 app = Flask(__name__)
 
@@ -17,10 +18,13 @@ def geocode():
     lat = None
     long = None
 
+    here_response = geo.make_here_query(address).text
+
     response_data = {
         'address': address,
         'lat': lat,
         'long': long,
+        'here': here_response,
     }
     js = json.dumps(response_data)
 
