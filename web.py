@@ -1,5 +1,6 @@
-from flask import Flask
+from flask import Flask, Response
 from flask import request
+import json
 
 app = Flask(__name__)
 
@@ -12,7 +13,18 @@ def hello():
 @app.route('/geocode')
 def geocode():
     address = request.args.get('address')
-    return "%s\n" % address
+
+    lat = None
+    long = None
+
+    response_data = {
+        'address': address,
+        'lat': lat,
+        'long': long,
+    }
+    js = json.dumps(response_data)
+
+    return Response(js, status=200, mimetype='application/json')
 
 
 if __name__ == '__main__':
