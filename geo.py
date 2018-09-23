@@ -5,6 +5,13 @@ from errors import NoResultException
 
 
 class GeocodingService(object):
+    """ This class abstracts a geo-coding service that can resolve lat-long given an address.
+
+    Multiple locations could be found by a given search text from external services, along with richer
+    information other than just a lat-long value. For simplicity, we only return a single lat-long pair
+    from the first result (if present). The `_parse_query` method could be easily extended for parse richer
+    information.
+    """
     _base_url = "base_url_undefined"
 
     def __init__(self, address):
