@@ -30,7 +30,7 @@ def geocode():
     }
     js = json.dumps(response_data)
 
-    return Response(js, status=200, mimetype='application/json')
+    return Response(js, status=200, content_type='application/json; charset=utf-8')
 
 
 if __name__ == '__main__':
