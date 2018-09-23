@@ -64,15 +64,13 @@ class GoogleService(GeocodingService):
         return lat_long['lat'], lat_long['lng'], 'Google'
 
 
-""" Make a query for latlong from address with fallback mechanism.
+def query_lat_lang_with_fallback(address):
+    """ Make a query for latlong from address with fallback mechanism.
 
-The method will first attempt to query latlong from Google geocoding service for it's higher precision. If the server cannot 
-connect to the Google service or a timeout happens, the server tries to route the query to the HERE geocoding service.
+    The method will first attempt to query latlong from Google geocoding service for it's higher precision. If the server cannot
+    connect to the Google service or a timeout happens, the server tries to route the query to the HERE geocoding service.
 
-Note: If Google service returns empty result, the server will also trigger fallback.
-"""
-def query_latlang_with_fallback(address):
-
+    Note: If Google service returns empty result, the server will also trigger fallback."""
     try:
         return GoogleService(address).make_query()
     except Exception:

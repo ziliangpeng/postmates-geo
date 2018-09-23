@@ -17,17 +17,13 @@ def geocode():
     address = request.args.get('address')
 
     try:
-        # here_response = geo.HereService(address).make_query()
-        # google_response = geo.GoogleService(address).make_query()
-        lat, long, service = geo.query_latlang_with_fallback(address)
+        lat, long, service = geo.query_lat_lang_with_fallback(address)
 
         response_data = {
             'address': address,
             'lat': lat,
             'long': long,
             'service_provider': service,
-            # 'here': here_response,
-            # 'google': google_response,
         }
         js = json.dumps(response_data)
 
