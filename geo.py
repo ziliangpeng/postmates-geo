@@ -27,8 +27,11 @@ class GeocodingService(object):
         url = self._construct_url()
         print(url)
         response = urllib.request.urlopen(url, timeout=2)
-        charsets = response.headers.get_charsets()
-        text = response.read().decode(charsets[0])
+        try:
+            charset = response.headers.get_charsets()[-1]
+        except IndexError:
+            charset = 'utf-8'
+        text = response.read().decode(charset)
         return self._parse_result(text)
 
 
