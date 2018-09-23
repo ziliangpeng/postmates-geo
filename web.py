@@ -12,7 +12,7 @@ def hello():
     return "Postmates X\n"
 
 
-@app.route('/geocode')
+@app.route('/v1/geocode')
 def geocode():
     address = request.args.get('address')
 
