@@ -17,7 +17,8 @@ class GeoServicesCredentials:
             raise Exception("key %s for service %s not found" % (key, service))
         value = self.js[service][key]
         if type(value) is not str:
-            raise Exception("key %s for service %s should be str" % (key, service))
+            raise Exception("key %s for service %s should be str" %
+                            (key, service))
 
     def __init__(self, js):
         self.js = js
