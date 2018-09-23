@@ -39,10 +39,10 @@ class HereService(GeocodingService):
         js = json.loads(text)
         try:
             lat_long = js['Response']['View'][0]['Result'][0]['Location']['DisplayPosition']
-        except (KeyError, IndexError) as e:
+        except (KeyError, IndexError):
             raise NoResultException()
 
-        return lat_long['Latitude'], lat_long['Longitude']
+        return lat_long['Latitude'], lat_long['Longitude'], 'Here'
 
 
 class GoogleService(GeocodingService):
@@ -61,6 +61,19 @@ class GoogleService(GeocodingService):
         except (KeyError, IndexError) as e:
             raise NoResultException()
 
-        return lat_long['lat'], lat_long['lng']
+        return lat_long['lat'], lat_long['lng'], 'Google'
 
 
+""" Make a query for latlong from address with fallback mechanism.
+
+The method will first attempt to query latlong from Google geocoding service for it's higher precision. If the server cannot 
+connect to the Google service or a timeout happens, the server tries to route the query to the HERE geocoding service.
+
+Note: If Google service returns empty result, the server will also trigger fallback.
+"""
+def query_latlang_with_fallback(address):
+
+    try:
+        return GoogleService(address).make_query()
+    except Exception:
+        return HereService(address).make_query()
