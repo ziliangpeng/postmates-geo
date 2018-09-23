@@ -31,6 +31,7 @@ class GeoServicesCredentials:
 
 
 def read_credentials():
+    """ Reads the secrets from file and return a GetServicesCredentials object to hold all the secrets."""
     with open(CREDENTIALS_FILE, 'r') as f:
         content = f.read()
         js = json.loads(content)

@@ -17,7 +17,7 @@ def geocode():
     address = request.args.get('address')
 
     try:
-        lat, long, service = geo.query_lat_lang_with_fallback(address)
+        lat, long, service = geo.query_lat_long_with_fallback(address)
 
         response_data = {
             'address': address,

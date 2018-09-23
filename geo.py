@@ -33,6 +33,7 @@ class GeocodingService(object):
 
 
 class HereService(GeocodingService):
+    """Implementation of proxying to Here service."""
     _base_url = "https://geocoder.api.here.com/6.2/geocode.json"
 
     def _params(self):
@@ -53,6 +54,7 @@ class HereService(GeocodingService):
 
 
 class GoogleService(GeocodingService):
+    """Implementation of proxying to Google service."""
     _base_url = "https://maps.googleapis.com/maps/api/geocode/json"
 
     def _params(self):
@@ -71,7 +73,7 @@ class GoogleService(GeocodingService):
         return lat_long['lat'], lat_long['lng'], 'Google'
 
 
-def query_lat_lang_with_fallback(address):
+def query_lat_long_with_fallback(address):
     """ Make a query for latlong from address with fallback mechanism.
 
     The method will first attempt to query latlong from Google geocoding service for it's higher precision. If the server cannot
