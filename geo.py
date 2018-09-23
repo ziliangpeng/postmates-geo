@@ -5,10 +5,10 @@ import urllib
 
 class GeocodingService(object):
     def __init__(self, address):
-        self.address = address.replace(' ', '+')
+        self.address = address
 
     def _construct_url(self):
-        raise NotImplementedError()
+        return "%s?%s" % (self._base_url, urllib.parse.urlencode(self._params()))
 
     def _parse_result(self, text):
         raise NotImplementedError()
@@ -23,8 +23,14 @@ class GeocodingService(object):
 
 
 class HereService(GeocodingService):
-    def _construct_url(self):
-        return "https://geocoder.api.here.com/6.2/geocode.json?app_id=%s&app_code=%s&searchtext=%s" % (creds.here_app_id, creds.here_app_code, self.address)
+    _base_url = "https://geocoder.api.here.com/6.2/geocode.json"
+
+    def _params(self):
+        return {
+            'app_id': creds.here_app_id,
+            'app_code': creds.here_app_code,
+            'searchtext': self.address,
+        }
 
     def _parse_result(self, text):
         js = json.loads(text)
@@ -33,8 +39,13 @@ class HereService(GeocodingService):
 
 
 class GoogleService(GeocodingService):
-    def _construct_url(self):
-        return "https://maps.googleapis.com/maps/api/geocode/json?address=%s&key=%s" % (self.address, creds.google_api_key)
+    _base_url = "https://maps.googleapis.com/maps/api/geocode/json"
+
+    def _params(self):
+        return {
+            'address': self.address,
+            'key': creds.google_api_key,
+        }
 
     def _parse_result(self, text):
         js = json.loads(text)
