@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  geo:
+    build:
+      context: .
+    container_name: pm-geo
+    ports:
+      - "8080:8080"
