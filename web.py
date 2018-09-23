@@ -7,6 +7,10 @@ from errors import NoResultException
 app = Flask(__name__)
 
 
+def make_response(status_code, js):
+    return Response(json.dumps(js), status=status_code, content_type='application/json; charset=utf-8')
+
+
 @app.route('/')
 def hello():
     return "Postmates X\n"
@@ -14,7 +18,9 @@ def hello():
 
 @app.route('/v1/geocode')
 def geocode():
-    address = request.args.get('address')
+    address = request.args.get('address').strip()
+    if address == "":
+        return make_response(400, {'error': "address cannot be empty"})
 
     try:
         lat, long, service = geo.query_lat_long_with_fallback(address)
@@ -25,17 +31,13 @@ def geocode():
             'long': long,
             'service_provider': service,
         }
-        js = json.dumps(response_data)
-
-        return Response(js, status=200, content_type='application/json; charset=utf-8')
+        return make_response(200, response_data)
     except NoResultException:
         response_data = {
             'address': address,
             'error': "No geolocation can be found for such address",
         }
-        js = json.dumps(response_data)
-
-        return Response(js, status=404, content_type='application/json; charset=utf-8')
+        return make_response(404, response_data)
 
 
 if __name__ == '__main__':

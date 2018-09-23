@@ -9,3 +9,4 @@ echo -e "\n\n"
 curl "http://localhost:8080/v1/geocode?address=Somewhere+Only+We+Know"
 echo -e "\n\n"
 
+curl "http://localhost:8080/v1/geocode?address="
