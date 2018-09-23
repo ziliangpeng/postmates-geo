@@ -19,7 +19,7 @@ cp credentials.json.example credentials.json
 Then put in your API secrets into corresponding fields in the json file. You must first obtain API token from HERE and Google service in order to run this service.
 
 
-### Starting The Serice
+### Starting The Service
 
 There are several ways of running the service
 
