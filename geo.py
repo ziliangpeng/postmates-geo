@@ -1,9 +1,12 @@
 from credentials import data as creds
 import json
 import urllib
+from errors import NoResultException
 
 
 class GeocodingService(object):
+    _base_url = "base_url_undefined"
+
     def __init__(self, address):
         self.address = address
 
@@ -34,8 +37,12 @@ class HereService(GeocodingService):
 
     def _parse_result(self, text):
         js = json.loads(text)
-        latlong = js['Response']['View'][0]['Result'][0]['Location']['DisplayPosition']
-        return latlong['Latitude'], latlong['Longitude']
+        try:
+            lat_long = js['Response']['View'][0]['Result'][0]['Location']['DisplayPosition']
+        except (KeyError, IndexError) as e:
+            raise NoResultException()
+
+        return lat_long['Latitude'], lat_long['Longitude']
 
 
 class GoogleService(GeocodingService):
@@ -49,7 +56,11 @@ class GoogleService(GeocodingService):
 
     def _parse_result(self, text):
         js = json.loads(text)
-        latlong = js['results'][0]['geometry']['location']
-        return latlong['lat'], latlong['lng']
+        try:
+            lat_long = js['results'][0]['geometry']['location']
+        except (KeyError, IndexError) as e:
+            raise NoResultException()
+
+        return lat_long['lat'], lat_long['lng']
 
 
